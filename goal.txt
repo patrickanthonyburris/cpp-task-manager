@@ -1,0 +1,3 @@
+My goal for this project at this juncture is to write a simple task manager app
+that allows the user to add, delete, modify, and search for tasks. Each task
+will have its own priority level, due date, etc. I can expand on this interface later.
