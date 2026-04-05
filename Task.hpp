@@ -10,9 +10,9 @@ class Task {
     std::string name;
 
 void print();
-    public:
+public:
+Task();
 Task(int priority, std::string due_date, std::string name);
 void print_task();
 };
-
 #endif

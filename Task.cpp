@@ -1,4 +1,6 @@
-#include "task.hpp"
+#include "Task.hpp"
+
+Task::Task() : completed(0), priority(0), due_date("TBD"), name("TBD") {}
 
 Task::Task(int priority, std::string due_date, std::string name) : completed(0), priority(priority), due_date(due_date), name(name) {}
 
