@@ -11,7 +11,7 @@ void main_prompt() {
 
 // Check user input for validity
 bool check_input(int user_input) {
-	if(user_input < 0 || user_input > 4) {
+	if(user_input <= 0 || user_input > 4) {
 		return 0;
 	}
 	return 1;
@@ -24,6 +24,7 @@ int prompt_user_main_menu() {
 	while(!valid_input) {
 		main_prompt();
 		std::cin >> user_input;
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		if(std::cin.fail() || !check_input(user_input)) {
 			std::cout << "Invalid input, please enter a 1, 2, 3, or 4.\n";
 			std::cin.clear();
@@ -35,28 +36,54 @@ int prompt_user_main_menu() {
 	return user_input;
 }
 
+// Prompt user to create new task
+void prompt_new_task(taskManager* Boss) {
+	int priority = 0;
+	std::string due_date;
+	std::string name;
+
+	std::cout << "What would you like your new task's name to be?\n";
+	std::getline(std::cin, name);
+	std::cout << "Please set a due date for this task (mm/dd/yyyy).\n";
+	std::getline(std::cin, due_date);
+
+	bool valid_input = 0;
+	while(!valid_input) {
+		std::cout << "What priority level is this task?\n1. Urgent\n2. High\n3. Medium\n4. Low\n";
+		std::cin >> priority;
+		if(std::cin.fail() || !check_input(priority)) {
+			std::cout << "Invalid input, please enter a 1, 2, 3, or 4.\n";
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			continue;
+		}
+		valid_input = 1;
+	}
+	Boss->create_task(priority, due_date, name);
+}
+
+
 // Take user's input and call proper functions accordingly
 void handle_menu_choice(int user_input, taskManager* Boss) {
 	switch(user_input) {
 		case 1:
-		// Implement TaskManager to call proper task functions
-		std::cout << "Option1\n";
-		break;
-		
+			// Implement TaskManager to call proper task functions
+			Boss->print_all_tasks();
+			break;
+
 		case 2:
-		std::cout << "Option2\n";
-		break;
-		
+			prompt_new_task(Boss);
+			break;
+
 		case 3:
-		std::cout << "Option3\n";
-		break;
-		
+			std::cout << "Option3\n";
+			break;
+
 		case 4:
-		std::cout << "Option4\n";
-		break;
+			std::cout << "Option4\n";
+			break;
 
 		default:
-		std::cout << "Unexpected error\n";
+			std::cout << "Unexpected error\n";
 
 	}
 }
@@ -64,7 +91,12 @@ void handle_menu_choice(int user_input, taskManager* Boss) {
 int main() {
 	taskManager Boss;
 
-	int user_input = prompt_user_main_menu();
-	handle_menu_choice(user_input, &Boss);
+	bool end = 0;
+	while(!end) {
+		int user_input = prompt_user_main_menu();
+		handle_menu_choice(user_input, &Boss);
+		std::cout << "Do you want to exit?\n1) Yes\n0) No\n";
+		std::cin >> end;
+	}
 	return 0;
 }

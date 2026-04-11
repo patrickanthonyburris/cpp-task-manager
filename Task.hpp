@@ -9,10 +9,10 @@ class Task {
     std::string due_date;
     std::string name;
 
-void print();
+void print () const;
 public:
 Task();
 Task(int priority, std::string due_date, std::string name);
-void print_task();
+void print_task () const;
 };
 #endif
