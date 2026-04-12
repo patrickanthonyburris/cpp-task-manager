@@ -61,6 +61,26 @@ void prompt_new_task(taskManager* Boss) {
 	Boss->create_task(priority, due_date, name);
 }
 
+// Prompt user to delete a task
+void prompt_delete_task(taskManager* Boss) {
+	int taskID = 0;
+	int pass = 0;
+	
+	while(!pass) {
+	bool valid_input = 0;
+	while(!valid_input) {
+	std::cout << "What is the taskID of the task you would like to delete? \n";
+	std::cin >> taskID;
+	if(std::cin.fail()) {
+	std::cout << "Invalid input, please enter an integer.\n";
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	continue;
+	}
+	valid_input = 1;
+	}
+	pass = Boss->delete_task(taskID);
+	}
+}
 
 // Take user's input and call proper functions accordingly
 void handle_menu_choice(int user_input, taskManager* Boss) {
@@ -75,7 +95,7 @@ void handle_menu_choice(int user_input, taskManager* Boss) {
 			break;
 
 		case 3:
-			std::cout << "Option3\n";
+			prompt_delete_task(Boss);
 			break;
 
 		case 4:

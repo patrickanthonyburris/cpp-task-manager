@@ -3,7 +3,8 @@
 // Helper
 // Inserts a task into the Hash Map
 void taskManager::insert_task(int priority, std::string due_date, std::string name) {
-	Tasks[this->current_task_ID] = Task(priority, due_date, name);
+	int taskID = this->current_task_ID;
+	Tasks[this->current_task_ID] = Task(priority, due_date, name, taskID);
 	this->current_task_ID++;
 	this->num_tasks++;
 }
@@ -16,9 +17,22 @@ void taskManager::create_task(int priority, std::string due_date, std::string na
 
 // Helper
 // Removes task from Hash Map
-void taskManager::remove_task(int taskID) { // Needs more work
+void taskManager::remove_task(int taskID) {
 	Tasks.erase(taskID);
+	std::cout << "Task succesfully deleted.\n";
 	this->num_tasks--;
+}
+
+// API
+// Removes task from Hash Map
+int taskManager::delete_task(int taskID) {
+	if(Tasks.find(taskID) == Tasks.end()) {
+		std::cout << "That taskID does not exist.\n";
+	return 0;
+	}
+	remove_task(taskID);
+	return 1;
+	
 }
 
 // Helper
