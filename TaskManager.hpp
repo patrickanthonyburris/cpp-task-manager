@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include "Task.hpp"
 
-class taskManager {
+class TaskManager {
 	std::unordered_map<int, Task> Tasks;
 	int current_task_ID = 1;
 	int num_tasks = 0;

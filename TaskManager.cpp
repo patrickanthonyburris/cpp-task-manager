@@ -1,8 +1,8 @@
-#include "taskManager.hpp"
+#include "TaskManager.hpp"
 
 // Helper
 // Inserts a task into the Hash Map
-void taskManager::insert_task(int priority, std::string due_date, std::string name) {
+void TaskManager::insert_task(int priority, std::string due_date, std::string name) {
 	int taskID = this->current_task_ID;
 	Tasks[this->current_task_ID] = Task(priority, due_date, name, taskID);
 	this->current_task_ID++;
@@ -11,13 +11,13 @@ void taskManager::insert_task(int priority, std::string due_date, std::string na
 
 // API
 // Creates a new task using provided task details
-void taskManager::create_task(int priority, std::string due_date, std::string name) {
+void TaskManager::create_task(int priority, std::string due_date, std::string name) {
 	insert_task(priority,due_date,name);
 }
 
 // Helper
 // Removes task from Hash Map
-void taskManager::remove_task(int taskID) {
+void TaskManager::remove_task(int taskID) {
 	Tasks.erase(taskID);
 	std::cout << "Task succesfully deleted.\n";
 	this->num_tasks--;
@@ -25,7 +25,7 @@ void taskManager::remove_task(int taskID) {
 
 // API
 // Removes task from Hash Map
-int taskManager::delete_task(int taskID) {
+int TaskManager::delete_task(int taskID) {
 	if(Tasks.find(taskID) == Tasks.end()) {
 		std::cout << "That taskID does not exist.\n";
 	return 0;
@@ -37,19 +37,19 @@ int taskManager::delete_task(int taskID) {
 
 // Helper
 // Prints all details of a single task, member variables
-void taskManager::print_task_details(int taskID) {
+void TaskManager::print_task_details(int taskID) {
 	Tasks[taskID].print_task();
 }
 
 // API
 // Prints a task and its information
-void taskManager::print_task(int taskID) {
+void TaskManager::print_task(int taskID) {
 	print_task_details(taskID);
 }
 
 // Helper
 // Prints all tasks and their respective details
-void taskManager::print_all_task_details() {
+void TaskManager::print_all_task_details() {
 	for(const auto& [task_id, task] : Tasks) {
 		task.print_task();
 		std::cout << "\n";
@@ -58,6 +58,6 @@ void taskManager::print_all_task_details() {
 
 // API
 // Prints all tasks
-void taskManager::print_all_tasks() {
+void TaskManager::print_all_tasks() {
 	print_all_task_details();
 }
