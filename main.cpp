@@ -7,16 +7,31 @@
 void print_help() {
 	std::cout << "Usage:\ntaskmanager <command> [options]\n";
 	std::cout << "Commands:\n";
-	std::cout << "add\tAdd a new task\n";
-	std::cout << "list\tList all tasks\n";
-	std::cout << "delete\tDelete a task by ID\n";
-	std::cout << "modify\tModify an existing task\n";
-	std::cout << "complete\tMark a task as complete\n";
+	std::cout << " add\t\tAdd a new task\n";
+	std::cout << " list\t\tList all tasks\n";
+	std::cout << " delete\t\tDelete a task by ID\n";
+	std::cout << " modify\t\tModify an existing task\n";
+	std::cout << " complete\tMark a task as complete\n";
 }
 
+// Print help page for add command
 void print_add_help() {
-	std::cout << "\nTHIS IS ADD HELP IT IS NOT IMPLEMENTED YET\n";
+	std::cout << "Usage:\n taskmanager add <title> [options]\n";
+	std::cout << "Description:\n";
+	std::cout << " Adds a new task to the task manager\n";
+	std::cout << "Arguments:\n";
+	std::cout << " <title>\tThe name or description of a task\n";
+	std::cout << "Options:\n";
+	std::cout << " -p, --priority <1-4>\tSet task priority\n";
+	std::cout << "\t\t1 = Urgent\n\t\t2 = High\n\t\t3 = Medium (default)\n\t\t4 = Low\n";
+	std::cout << "\n -d, --due <MM/DD/YYYY>\t Set due date\n";
+	std::cout << "\n -h, --help\tShow this help message\n";
+	std::cout << "Examples:\n";
+	std::cout << " taskmanager add Laundry\n";
+	std::cout << " taskmanager add Project --priority 1\n";
+	std::cout << " taskmanager add Dishes -p 3 -d 04/25/2026\n";
 }
+
 
 // Parse input to confirm integer
 bool parse_int(const std::string& input, int& result) {
@@ -51,6 +66,7 @@ bool validate_int_input(const std::string& input, int& value, int min, int max) 
 	return true;
 }
 
+// Validate the date is in the right format and within expected values
 bool validate_date(const std::string& date) {
 	if(date.length() != 10) {
 		std::cout << "Error: invalid date format\n";
@@ -82,6 +98,7 @@ bool validate_date(const std::string& date) {
 	return true;
 }
 
+// Handles the add command
 int handle_add(TaskManager* mngr, int argc, char* argv[]) {
 	if(argc < 3) {
 		print_add_help();
@@ -95,7 +112,7 @@ int handle_add(TaskManager* mngr, int argc, char* argv[]) {
 	for(int i = 3; i < argc; i++) {
 		std::string arg = argv[i];
 
-		if(arg == "--priority") {
+		if(arg == "--priority" || arg == "-p") {
 			if((i + 1) >= argc) {
 				std::cout << "Error: missing value for --priority\n";
 				return 1;
@@ -103,10 +120,10 @@ int handle_add(TaskManager* mngr, int argc, char* argv[]) {
 			if(!validate_int_input(argv[i+1], priority, 1, 4)) {
 				return 1;
 			}
-			// priority = argv[i++];
+			i++;
 		}
 
-		if(arg == "--due") {
+		if(arg == "--due" || arg == "-d") {
 			if((i + 1) >= argc) {
 				std::cout << "Error: missing value for --due\n";
 				return 1;
@@ -134,6 +151,6 @@ int main(int argc, char* argv[]) {
 		handle_add(&mngr, argc, argv);
 	}
 	
-	mngr.print_all_tasks();
+	mngr.print_all_tasks(); // For testing
 	return 0;
 }
