@@ -19,7 +19,6 @@ void TaskManager::create_task(int priority, std::string due_date, std::string na
 // Removes task from Hash Map
 void TaskManager::remove_task(int taskID) {
 	Tasks.erase(taskID);
-	std::cout << "Task succesfully deleted.\n";
 	this->num_tasks--;
 }
 

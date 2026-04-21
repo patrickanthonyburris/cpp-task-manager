@@ -32,6 +32,17 @@ void print_add_help() {
 	std::cout << " taskmanager add Dishes -p 3 -d 04/25/2026\n";
 }
 
+void print_delete_help() {
+	std::cout << "Usage:\n taskmanager delete <TaskID>\n";
+	std::cout << "Description:\n";
+	std::cout << " Deletes an existing task from the task manager\n";
+	std::cout << "Arguments:\n";
+	std::cout << " <TaskID>\tThe unique ID of the task to be deleted\n";
+	std::cout << "Options:\n";
+	std::cout << " -h, --help\tShow this help message\n";
+	std::cout << "Examples:\n";
+	std::cout << " taskmanager delete 5\n";
+}
 
 // Parse input to confirm integer
 bool parse_int(const std::string& input, int& result) {
@@ -138,6 +149,15 @@ int handle_add(TaskManager* mngr, int argc, char* argv[]) {
 	return 0;
 }
 
+// Handles the delete command
+int handle_delete(TaskManager* mngr, int argc, char* argv[]) {
+	if(argc < 3) {
+		print_delete_help();
+	}
+
+	// implement delete
+}
+
 int main(int argc, char* argv[]) {
 	TaskManager mngr;
 	
@@ -150,7 +170,13 @@ int main(int argc, char* argv[]) {
 	if(command == "add") {
 		handle_add(&mngr, argc, argv);
 	}
-	
+	if(command == "list") {
+		// Implement list
+	}
+	if(command == "delete") {
+		handle_delete(&mngr, argc, argv);
+	}
+
 	mngr.print_all_tasks(); // For testing
 	return 0;
 }
