@@ -32,6 +32,21 @@ void print_add_help() {
 	std::cout << " taskmanager add Dishes -p 3 -d 04/25/2026\n";
 }
 
+// Print help page for list command
+// Will expand when more list options are implemented
+void print_list_help() {
+	std::cout << "Usage:\n taskmanager list\n";
+	std::cout << "Description:\n";
+	std::cout << " Lists all existing tasks from the task manager\n";
+	std::cout << "Arguments:\n";
+	std::cout << " None\n";
+	std::cout << "Options:\n";
+	std::cout << " -h, --help\tShow this help message\n";
+	std::cout << "Examples:\n";
+	std::cout << " taskmanager list\n";
+}
+
+// Print help page for delete command
 void print_delete_help() {
 	std::cout << "Usage:\n taskmanager delete <TaskID>\n";
 	std::cout << "Description:\n";
@@ -42,6 +57,19 @@ void print_delete_help() {
 	std::cout << " -h, --help\tShow this help message\n";
 	std::cout << "Examples:\n";
 	std::cout << " taskmanager delete 5\n";
+}
+
+// Print help page for complete command
+void print_complete_help() {
+	std::cout << "Usage:\n taskmanager complete <TaskID>\n";
+	std::cout << "Description:\n";
+	std::cout << " Marks an existing task as completed\n";
+	std::cout << "Arguments:\n";
+	std::cout << " <TaskID>\tThe unique ID of the task to be marked complete\n";
+	std::cout << "Options:\n";
+	std::cout << " -h, --help\tShow this help message\n";
+	std::cout << "Examples:\n";
+	std::cout << " taskmanager complete 5\n";
 }
 
 // Parse input to confirm integer
@@ -154,12 +182,45 @@ int handle_delete(TaskManager* mngr, int argc, char* argv[]) {
 	if(argc < 3) {
 		print_delete_help();
 	}
+	int taskID = 0;
+	validate_int_input(argv[2], taskID, 0, 10000);	
+	if(mngr->delete_task(taskID)) {
+		std::cout << "Task " << taskID << " succesfully deleted\n";
+		return 0;
+	}
+	std::cout << "Error: task " << taskID << " could not be deleted\n";
+	return 1;
+}
 
-	// implement delete
+// Handles the list command
+int handle_list(TaskManager* mngr, int argc, char* argv[]) {
+	
+	// Will add extended list functionality in future
+	/*if(argc < 3) {
+		print_list_help();
+	}*/
+	mngr->print_all_tasks();
+	return 0;
+}
+
+// Handles the complete command
+int handle_complete(TaskManager* mngr, int argc, char* argv[]) {
+	if(argc < 3) {
+		print_complete_help();
+	}
+	int taskID = 0;
+	validate_int_input(argv[2], taskID, 0, 10000);	
+	if(mngr->complete_task(taskID)) {
+		std::cout << "Task " << taskID << " succesfully marked complete\n";
+		return 0;
+	}
+	std::cout << "Error: task " << taskID << " could not be marked complete\n";
+	return 1;
 }
 
 int main(int argc, char* argv[]) {
 	TaskManager mngr;
+	// mngr.create_task(1, "05/06/2026", "TEST"); // For Testing commands
 	
 	if(argc < 2) {
 		print_help();
@@ -171,12 +232,15 @@ int main(int argc, char* argv[]) {
 		handle_add(&mngr, argc, argv);
 	}
 	if(command == "list") {
-		// Implement list
+		handle_list(&mngr, argc, argv);
 	}
 	if(command == "delete") {
 		handle_delete(&mngr, argc, argv);
 	}
+	if(command == "complete") {
+		handle_complete(&mngr, argc, argv);
+	}
 
-	mngr.print_all_tasks(); // For testing
+	// mngr.print_all_tasks(); // For testing
 	return 0;
 }

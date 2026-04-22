@@ -26,8 +26,7 @@ void TaskManager::remove_task(int taskID) {
 // Removes task from Hash Map
 int TaskManager::delete_task(int taskID) {
 	if(Tasks.find(taskID) == Tasks.end()) {
-		std::cout << "That taskID does not exist.\n";
-	return 0;
+		return 0;
 	}
 	remove_task(taskID);
 	return 1;
@@ -59,4 +58,20 @@ void TaskManager::print_all_task_details() {
 // Prints all tasks
 void TaskManager::print_all_tasks() {
 	print_all_task_details();
+}
+
+// Helper
+// Mark a specifc task to completed via taskID
+void TaskManager::mark_task_completed(int taskID) {
+	Tasks[taskID].mark_task_completed();
+}
+
+// API
+// Update a task to completed
+int TaskManager::complete_task(int taskID) {
+	if(Tasks.find(taskID) == Tasks.end()) {
+		return 0;
+	}
+	mark_task_completed(taskID);
+		return 1;
 }

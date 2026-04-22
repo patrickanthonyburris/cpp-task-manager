@@ -11,9 +11,11 @@ class Task {
     int taskID = 0;
 
 void print_details () const;
+void update_completed_variable();
 public:
 Task();
 Task(int priority, std::string due_date, std::string name, int taskID);
 void print_task () const;
+void mark_task_completed();
 };
 #endif
