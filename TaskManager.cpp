@@ -62,16 +62,32 @@ void TaskManager::print_all_tasks() {
 
 // Helper
 // Mark a specifc task to completed via taskID
-void TaskManager::mark_task_completed(int taskID) {
-	Tasks[taskID].mark_task_completed();
+void TaskManager::mark_task_completed(int taskID, int completion_status) {
+	Tasks[taskID].mark_task_completed(completion_status);
 }
 
 // API
 // Update a task to completed
-int TaskManager::complete_task(int taskID) {
+int TaskManager::complete_task(int taskID, int completion_status) {
 	if(Tasks.find(taskID) == Tasks.end()) {
 		return 0;
 	}
-	mark_task_completed(taskID);
+	mark_task_completed(taskID, completion_status);
+		return 1;
+}
+
+// Helper
+// Changes a specific task's title member variable
+void TaskManager::change_task_title(std::string new_title, int taskID) {
+	Tasks[taskID].change_title(new_title);
+}
+
+// API
+// Modify a specific task via taskID
+int TaskManager::modify_title(std::string new_title, int taskID) {
+	if(Tasks.find(taskID) == Tasks.end()) {
+		return 0;
+	}
+	change_task_title(new_title, taskID);
 		return 1;
 }

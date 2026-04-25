@@ -72,6 +72,26 @@ void print_complete_help() {
 	std::cout << " taskmanager complete 5\n";
 }
 
+// Print help page for modify command
+void print_modify_help() {
+	std::cout << "Usage:\n taskmanager modify <TaskID>\n";
+	std::cout << "Description:\n";
+	std::cout << " Modifies an existing task based on options provided\n";
+	std::cout << "Arguments:\n";
+	std::cout << " <TaskID>\tThe unique ID of the task to be modified\n";
+	std::cout << "Options:\n";
+	std::cout << " -t, --title <new title>\t Sets a new title for specified task\n";
+	std::cout << " -p, --priority <1-4>\tSet a new priority level for specified task\n";
+	std::cout << "\t\t1 = Urgent\n\t\t2 = High\n\t\t3 = Medium (default)\n\t\t4 = Low\n";
+	std::cout << " -d, -due <MM/DD/YYYY>\t Sets a new due date for specified task\n";
+	std::cout << " -c, --complete\t Marks specified task as completed\n";
+	std::cout << " -i, --incomplete\t Marks specified task as incomplete\n";
+	std::cout << " -h, --help\tShow this help message\n";
+	std::cout << "Examples:\n";
+	std::cout << " taskmanager modify 3 -p 3 --due 07/05/2028 --title Party\n";
+	std::cout << " taskmanager modify 115 -i\n";
+}
+
 // Parse input to confirm integer
 bool parse_int(const std::string& input, int& result) {
 	try {
@@ -123,15 +143,12 @@ bool validate_date(const std::string& date) {
 	std::string year = date.substr(6,4);
 	int year_int = 0;
 	if(!validate_int_input(month, month_int, 1, 12)) {
-		std::cout << "Error: month must be a valid integer from 1-12\n";
 		return false;
 	} 
 	if(!validate_int_input(day, day_int, 1, 31)) {
-		std::cout << "Error: day must be a valid integer from 1-31\n";
 		return false;
 	} 
 	if(!validate_int_input(year, year_int, 2026, 9999)) {
-		std::cout << "Error: year must be a valid integer from 2026-9999\n";
 		return false;
 	} 
 	return true;
@@ -159,7 +176,6 @@ int handle_add(TaskManager* mngr, int argc, char* argv[]) {
 			if(!validate_int_input(argv[i+1], priority, 1, 4)) {
 				return 1;
 			}
-			i++;
 		}
 
 		if(arg == "--due" || arg == "-d") {
@@ -172,6 +188,7 @@ int handle_add(TaskManager* mngr, int argc, char* argv[]) {
 			}
 			due_date = argv[i+1];
 		}
+	i++;
 	}
 	mngr->create_task(priority, due_date, name);
 	return 0;
@@ -183,7 +200,9 @@ int handle_delete(TaskManager* mngr, int argc, char* argv[]) {
 		print_delete_help();
 	}
 	int taskID = 0;
-	validate_int_input(argv[2], taskID, 0, 10000);	
+	if(!validate_int_input(argv[2], taskID, 0, 10000)) {
+		return 1;
+	}	
 	if(mngr->delete_task(taskID)) {
 		std::cout << "Task " << taskID << " succesfully deleted\n";
 		return 0;
@@ -209,8 +228,10 @@ int handle_complete(TaskManager* mngr, int argc, char* argv[]) {
 		print_complete_help();
 	}
 	int taskID = 0;
-	validate_int_input(argv[2], taskID, 0, 10000);	
-	if(mngr->complete_task(taskID)) {
+	if(!validate_int_input(argv[2], taskID, 0, 10000)) {
+		return 1;
+	}	
+	if(mngr->complete_task(taskID, 1)) {
 		std::cout << "Task " << taskID << " succesfully marked complete\n";
 		return 0;
 	}
@@ -218,9 +239,78 @@ int handle_complete(TaskManager* mngr, int argc, char* argv[]) {
 	return 1;
 }
 
+// Handles the modify command
+int handle_modify(TaskManager* mngr, int argc, char* argv[]) {
+	if(argc < 3) {
+		print_modify_help();
+	}
+	
+	int taskID = 0;
+	if(argc > 3) {
+		if(!validate_int_input(argv[2], taskID, 0, 10000)) {
+			return 1;		
+		}
+	}
+
+	for(int i = 3; i < argc; i++) {
+		std::string arg = argv[i];
+		
+		if(arg == "--title" || arg == "-t") {
+			if((i + 1) >= argc) {
+				std::cout << "Error: missing new 'title' for --title\n";
+				return 1;
+			}
+		std::string new_title = argv[i + 1];
+		mngr->modify_title(new_title, taskID);
+		}
+
+		if(arg == "--priority" || arg == "-p") {
+			if((i + 1) >= argc) {
+				std::cout << "Error: missing value for --priority\n";
+				return 1;
+			}
+			int new_priority = 0;
+			if(!validate_int_input(argv[i+1], new_priority, 1, 4)) {
+				return 1;
+			}
+		//mngr->modify_priority(new_priority);
+		}
+
+		if(arg == "--due" || arg == "-d") {
+			if((i + 1) >= argc) {
+				std::cout << "Error: missing value for --due\n";
+				return 1;
+			}
+			std::string new_due_date = "";
+			if(!validate_date(argv[i+1])) {
+				return 1;
+			}
+			new_due_date = argv[i+1];
+		// mngr->modify_due_date(new_due_date);
+		}
+		if(arg == "--complete" || arg == "-c") {
+			if(mngr->complete_task(taskID, 1)) {
+				std::cout << "Task " << taskID << " has been succesfully marked complete\n";
+			} else {
+				std::cout << "Error: task " << taskID << " could not be marked complete\n";
+			}
+		}
+		if(arg == "--incomplete" || arg == "-i") {
+			if(mngr->complete_task(taskID, 0)) {
+				std::cout << "Task " << taskID << " has been successfully marked incomplete\n";
+			} else {
+				std::cout << "Error: task " << taskID << " could not be marked incomplete\n";
+			}
+		}
+
+	i++;
+	}	
+	return 0;
+}
+
 int main(int argc, char* argv[]) {
 	TaskManager mngr;
-	// mngr.create_task(1, "05/06/2026", "TEST"); // For Testing commands
+	mngr.create_task(1, "05/06/2026", "TEST"); // For Testing commands
 	
 	if(argc < 2) {
 		print_help();
@@ -240,7 +330,10 @@ int main(int argc, char* argv[]) {
 	if(command == "complete") {
 		handle_complete(&mngr, argc, argv);
 	}
+	if(command == "modify") {
+		handle_modify(&mngr, argc, argv);
+	}
 
-	// mngr.print_all_tasks(); // For testing
+	mngr.print_all_tasks(); // For testing
 	return 0;
 }
