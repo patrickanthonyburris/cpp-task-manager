@@ -123,3 +123,13 @@ int TaskManager::modify_due_date(std::string new_due_date, int taskID) {
 	change_task_due_date(new_due_date, taskID);
 		return 1;
 }
+
+int TaskManager::get_next_id() {
+	return this->next_ID;
+}
+
+// API
+// Gets task map
+std::unordered_map<int, Task>& TaskManager::get_task_map() {
+	return this->Tasks;
+}

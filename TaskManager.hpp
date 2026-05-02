@@ -6,6 +6,7 @@
 class TaskManager {
 	std::unordered_map<int, Task> Tasks;
 	int current_task_ID = 1;
+	int next_ID = 13;
 	int num_tasks = 0;
 
 void insert_task(int priority, std::string due_date, std::string name);
@@ -24,7 +25,9 @@ int modify_priority(int new_priority, int taskID);
 void print_task(int taskID);
 int complete_task(int taskID, int completion_status);
 void print_all_tasks();
-int modify_due_date(std::string new_due_date, int taskID); 
+int modify_due_date(std::string new_due_date, int taskID);
+int get_next_id();
+std::unordered_map<int, Task>& get_task_map(); 
 // Modify and access tasks functionality needed
 
 };

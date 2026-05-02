@@ -1,15 +1,15 @@
 #include "Task.hpp"
 
 // Default Constructor
-Task::Task() : completed(0), priority(0), due_date("TBD"), name("TBD") {}
+Task::Task() : completed(0), priority(0), due_date("TBD"), title("TBD") {}
 
 // Constructor
-Task::Task(int priority, std::string due_date, std::string name, int ID) : completed(0), priority(priority), due_date(due_date), name(name), ID(ID) {}
+Task::Task(int priority, std::string due_date, std::string title, int ID) : completed(0), priority(priority), due_date(due_date), title(title), ID(ID) {}
 
 // Helper
 // Prints out all details of the task
 void Task::print_details() const {
-    std::cout << "\nTask: " << this->name << "\n";
+    std::cout << "\nTask: " << this->title << "\n";
     std::cout << "Due date: " << this->due_date<< "\n";
     std::cout << "Priority Level: " << this->priority << "\n";
     std::cout << "TaskID: " << this->ID << "\n";
@@ -42,7 +42,7 @@ void Task::mark_task_completed(int completion_status) {
 // Helper
 // Sets title
 void Task::set_title(std::string title) {
-	this->name = title;
+	this->title = title;
 }
 
 // API
@@ -73,4 +73,34 @@ void Task::set_due_date(std::string due_date) {
 // Changes the due date to provided due date
 void Task::change_due_date(std::string due_date) {
 	set_due_date(due_date);
+}
+
+// API
+// Gets title
+const std::string& Task::get_title() const {
+	return this->title;
+}
+
+// API
+// Gets ID
+int Task::get_ID() const {
+	return this->ID;
+}
+
+// API
+// Gets priority
+int Task::get_priority() const {
+	return this->priority;
+}
+
+// API
+// Gets due date
+const std::string& Task::get_due_date() const {
+	return this->due_date;
+}
+
+// API
+// Gets completed
+bool Task::get_completed() const {
+	return this->completed;
 }

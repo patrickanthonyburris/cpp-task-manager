@@ -1,7 +1,9 @@
 #include <iostream>
 #include <limits>
 #include <functional>
+#include <fstream>
 #include "TaskManager.hpp"
+#include "TaskStorage.hpp"
 
 // List of all commands and how to use them
 void print_help() {
@@ -191,6 +193,7 @@ int handle_add(TaskManager* mngr, int argc, char* argv[]) {
 	i++;
 	}
 	mngr->create_task(priority, due_date, name);
+	
 	return 0;
 }
 
@@ -310,6 +313,7 @@ int handle_modify(TaskManager* mngr, int argc, char* argv[]) {
 
 int main(int argc, char* argv[]) {
 	TaskManager mngr;
+	TaskStorage storage("tasks.json");
 	mngr.create_task(1, "05/06/2026", "TEST"); // For Testing commands
 	
 	if(argc < 2) {
@@ -319,7 +323,10 @@ int main(int argc, char* argv[]) {
 	std::string command = argv[1];
 	
 	if(command == "add") {
-		handle_add(&mngr, argc, argv);
+		if(!handle_add(&mngr, argc, argv)) {
+			storage.save(mngr.get_task_map(), mngr.get_next_id());
+		}
+		
 	}
 	if(command == "list") {
 		handle_list(&mngr, argc, argv);
