@@ -1,0 +1,15 @@
+# Compiled binaries
+*.out
+*.exe
+*.o
+
+# Build folders
+build/
+bin/
+include/
+
+# Logs
+*.log
+
+# JSON data files
+tasks.json
