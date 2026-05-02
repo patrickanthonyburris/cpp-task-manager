@@ -8,16 +8,20 @@ class Task {
     int priority = 0;
     std::string due_date;
     std::string name;
-    int taskID = 0;
+    int ID = 0;
 
 void print_details () const;
 void update_completed_variable(int completion_status);
 void set_title(std::string title);
+void set_priority(int priority);
+void set_due_date(std::string due_date);
 public:
 Task();
-Task(int priority, std::string due_date, std::string name, int taskID);
+Task(int priority, std::string due_date, std::string name, int ID);
 void print_task () const;
 void mark_task_completed(int completion_status);
 void change_title(std::string new_title);
+void change_priority(int new_priority);
+void change_due_date(std::string due_date);
 };
 #endif

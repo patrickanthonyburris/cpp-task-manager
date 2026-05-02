@@ -11,6 +11,8 @@ class TaskManager {
 void insert_task(int priority, std::string due_date, std::string name);
 void remove_task(int taskID);
 void change_task_title(std::string new_title, int taskID);
+void change_task_priority(int new_priority, int taskID);
+void change_task_due_date(std::string new_due_date, int taskID);
 void mark_task_completed(int taskID, int completion_status);
 void print_task_details(int taskID);
 void print_all_task_details();
@@ -18,9 +20,11 @@ public:
 void create_task(int priority, std::string due_date, std::string name);
 int delete_task(int taskID);
 int modify_title(std::string new_title, int taskID);
+int modify_priority(int new_priority, int taskID);
 void print_task(int taskID);
 int complete_task(int taskID, int completion_status);
 void print_all_tasks();
+int modify_due_date(std::string new_due_date, int taskID); 
 // Modify and access tasks functionality needed
 
 };

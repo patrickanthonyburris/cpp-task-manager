@@ -83,11 +83,43 @@ void TaskManager::change_task_title(std::string new_title, int taskID) {
 }
 
 // API
-// Modify a specific task via taskID
+// Modify a specific task's title via taskID
 int TaskManager::modify_title(std::string new_title, int taskID) {
 	if(Tasks.find(taskID) == Tasks.end()) {
 		return 0;
 	}
 	change_task_title(new_title, taskID);
+		return 1;
+}
+
+// Helper
+// Changes a specific task's priority member variable
+void TaskManager::change_task_priority(int new_priority, int taskID) {
+	Tasks[taskID].change_priority(new_priority);
+}
+
+// API
+// Modify a specific task's priority level via taskID
+int TaskManager::modify_priority(int new_priority, int taskID) {
+	if(Tasks.find(taskID) == Tasks.end()) {
+		return 0;
+	}
+	change_task_priority(new_priority, taskID);
+		return 1;
+}
+
+// Helper
+// Changes a specific task's due date member variable
+void TaskManager::change_task_due_date(std::string new_due_date, int taskID) {
+	Tasks[taskID].change_due_date(new_due_date);	
+}
+
+// API
+// Modify a specific task's due date via taskID
+int TaskManager::modify_due_date(std::string new_due_date, int taskID) {
+	if(Tasks.find(taskID) == Tasks.end()) {
+		return 0;
+	}
+	change_task_due_date(new_due_date, taskID);
 		return 1;
 }

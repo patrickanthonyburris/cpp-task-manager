@@ -273,7 +273,7 @@ int handle_modify(TaskManager* mngr, int argc, char* argv[]) {
 			if(!validate_int_input(argv[i+1], new_priority, 1, 4)) {
 				return 1;
 			}
-		//mngr->modify_priority(new_priority);
+		mngr->modify_priority(new_priority, taskID);
 		}
 
 		if(arg == "--due" || arg == "-d") {
@@ -286,7 +286,7 @@ int handle_modify(TaskManager* mngr, int argc, char* argv[]) {
 				return 1;
 			}
 			new_due_date = argv[i+1];
-		// mngr->modify_due_date(new_due_date);
+		mngr->modify_due_date(new_due_date, taskID); // implement
 		}
 		if(arg == "--complete" || arg == "-c") {
 			if(mngr->complete_task(taskID, 1)) {
@@ -303,7 +303,7 @@ int handle_modify(TaskManager* mngr, int argc, char* argv[]) {
 			}
 		}
 
-	i++;
+	// i++;
 	}	
 	return 0;
 }

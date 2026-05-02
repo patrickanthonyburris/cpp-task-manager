@@ -4,15 +4,15 @@
 Task::Task() : completed(0), priority(0), due_date("TBD"), name("TBD") {}
 
 // Constructor
-Task::Task(int priority, std::string due_date, std::string name, int taskID) : completed(0), priority(priority), due_date(due_date), name(name), taskID(taskID) {}
+Task::Task(int priority, std::string due_date, std::string name, int ID) : completed(0), priority(priority), due_date(due_date), name(name), ID(ID) {}
 
 // Helper
-// Prints out all details of a task
+// Prints out all details of the task
 void Task::print_details() const {
     std::cout << "\nTask: " << this->name << "\n";
     std::cout << "Due date: " << this->due_date<< "\n";
     std::cout << "Priority Level: " << this->priority << "\n";
-    std::cout << "TaskID: " << this->taskID << "\n";
+    std::cout << "TaskID: " << this->ID << "\n";
     std::cout << "Completion Status: ";
     if(!this->completed) {
 	std::cout << "Incomplete\n";
@@ -34,19 +34,43 @@ void Task::update_completed_variable(int completion_status) {
 }
 
 // API
-// Marks a task as complete
+// Marks task as complete
 void Task::mark_task_completed(int completion_status) {
 	update_completed_variable(completion_status);
 }
 
 // Helper
-// Set title to given title
+// Sets title
 void Task::set_title(std::string title) {
 	this->name = title;
 }
 
 // API
-// Changes the title of a task 
+// Changes the title to given title
 void Task::change_title(std::string new_title) {
 	set_title(new_title);
+}
+
+// Helper
+// Sets priority level
+void Task::set_priority(int priority) {
+	this->priority = priority;
+}
+
+// API
+// Changes the priority level to given priority
+void Task::change_priority(int new_priority) {
+	set_priority(new_priority);
+}
+
+// Helper
+// Sets due date
+void Task::set_due_date(std::string due_date) {
+	this->due_date = due_date;
+}
+
+// API
+// Changes the due date to provided due date
+void Task::change_due_date(std::string due_date) {
+	set_due_date(due_date);
 }
